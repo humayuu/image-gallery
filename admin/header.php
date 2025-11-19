@@ -5,32 +5,32 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="../../assets/images/favicon-32x32.png" type="image/png" />
+    <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
     <!--plugins-->
-    <link href="../../assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
-    <link href="../../assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
-    <link href="../../assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
-    <link href="../../assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
+    <link href="assets/plugins/vectormap/jquery-jvectormap-2.0.2.css" rel="stylesheet" />
+    <link href="assets/plugins/simplebar/css/simplebar.css" rel="stylesheet" />
+    <link href="assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" />
+    <link href="assets/plugins/metismenu/css/metisMenu.min.css" rel="stylesheet" />
     <!-- Bootstrap CSS -->
-    <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="../../assets/css/bootstrap-extended.css" rel="stylesheet" />
-    <link href="../../assets/css/style.css" rel="stylesheet" />
-    <link href="../../assets/css/icons.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/bootstrap-extended.css" rel="stylesheet" />
+    <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
 
 
     <!-- loader-->
-    <link href="../../assets/css/pace.min.css" rel="stylesheet" />
+    <link href="assets/css/pace.min.css" rel="stylesheet" />
 
     <!--Theme Styles-->
-    <link href="../../assets/css/dark-theme.css" rel="stylesheet" />
-    <link href="../../assets/css/light-theme.css" rel="stylesheet" />
-    <link href="../../assets/css/semi-dark.css" rel="stylesheet" />
-    <link href="../../assets/css/header-colors.css" rel="stylesheet" />
+    <link href="assets/css/dark-theme.css" rel="stylesheet" />
+    <link href="assets/css/light-theme.css" rel="stylesheet" />
+    <link href="assets/css/semi-dark.css" rel="stylesheet" />
+    <link href="assets/css/header-colors.css" rel="stylesheet" />
 
-    <title>Manage News Blog</title>
+    <title>Image Gallery</title>
 </head>
 
 <body>
@@ -76,7 +76,7 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item" href="../../logout.php">
+                            <a class="dropdown-item" href="logout.php">
                                 <div class="d-flex align-items-center">
                                     <div class=""><i class="bi bi-lock-fill"></i></div>
                                     <div class="ms-3"><span>Logout</span></div>
@@ -93,52 +93,13 @@
         <aside class="sidebar-wrapper" data-simplebar="true">
             <div class="sidebar-header">
                 <div>
-                    <img src="../../assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
-                </div>
-                <div>
-                    <h4 class="logo-text">Ratnews</h4>
+                    <h4 class="logo-text text-dark">Image Gallery</h4>
                 </div>
                 <div class="toggle-icon ms-auto"> <i class="bi bi-list"></i>
                 </div>
             </div>
             <!--navigation-->
             <ul class="metismenu" id="menu">
-                <?php if( $_SESSION['adminUserRole'] == 'admin'): ?>
-                <li>
-                    <a href="../category/dashboard.php">
-                        <div class="parent-icon"><i class="bi bi-house-fill"></i>
-                        </div>
-                        <div class="menu-title">Dashboard</div>
-                    </a>
-                </li>
-
-                <li>
-                    <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i class="bi bi-bookmark-fill"></i>
-                        </div>
-                        <div class="menu-title">Manage Category</div>
-                    </a>
-                    <ul>
-                        <li> <a href="../category/all_category.php"><i class="bi bi-circle"></i>All Category</a>
-                        </li>
-                    </ul>
-                </li>
-                <?php endif; ?>
-
-                <li>
-                    <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i class="bi bi-stickies-fill"></i>
-                        </div>
-                        <div class="menu-title">Manage Post</div>
-                    </a>
-                    <ul>
-                        <li> <a href="../posts/add_post.php"><i class="bi bi-circle"></i>Add Posts</a>
-                        <li> <a href="../posts/view_all_post.php"><i class="bi bi-circle"></i>View Posts</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <?php if( $_SESSION['adminUserRole'] == 'admin'): ?>
 
                 <li>
                     <a class="has-arrow" href="javascript:;">
@@ -151,30 +112,6 @@
                         </li>
                     </ul>
                 </li>
-
-                <li>
-                    <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i class="bi bi-people-fill"></i>
-                        </div>
-                        <div class="menu-title">Manage Admin User</div>
-                    </a>
-                    <ul>
-                        <li> <a href="../admin_users/all_admin_user.php"><i class="bi bi-circle"></i>All Admin User</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="has-arrow" href="javascript:;">
-                        <div class="parent-icon"><i class="bi bi-gear-fill"></i>
-                        </div>
-                        <div class="menu-title">Manage Settings</div>
-                    </a>
-                    <ul>
-                        <li> <a href="../settings/settings.php"><i class="bi bi-circle"></i>All Settings</a>
-                        </li>
-                    </ul>
-                </li>
-                <?php endif; ?>
             </ul>
             <!--end navigation-->
         </aside>
