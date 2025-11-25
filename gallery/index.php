@@ -40,7 +40,7 @@
         </div>
     </nav>
 
-    <section class="p-5 m-5">
+    <section class="p-3 m-3">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
@@ -63,7 +63,7 @@
                                 <option value="3">Three</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-dark">Submit</button>
                     </form>
                 </div>
             </div>
@@ -71,7 +71,7 @@
     </section>
 
 
-    <section class="p-5 m-5">
+    <section class="p-3 m-3">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
