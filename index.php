@@ -2,6 +2,13 @@
 // Session Start
 session_start();
 
+// Check if User is already Exists
+if(isset($_SESSION['loggedIn']) == true){
+      // Redirected to Home page 
+    header('Location: gallery/index.php');
+    exit;
+}
+
 // Connection to Database
 require 'config.php';
 
@@ -39,7 +46,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['isSubmitted'])){
     $stmt = $conn->prepare("SELECT * FROM users_tbl WHERE user_email = :uemail");
     $stmt->bindParam(':uemail', $email);
     $stmt->execute();
-    $user =  $stmt->fetchAll();
+    $user =  $stmt->fetch();
 
     // Verify user email
     if(!$user){
@@ -49,7 +56,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['isSubmitted'])){
     }
 
     // Verify user password
-    if(password_verify($password, $user['user_password'])){
+    if(!password_verify($password, $user['user_password'])){
         $_SESSION['errors'][] = 'Invalid Email or Password';
         header('Location: ' . basename(__FILE__));
         exit;
@@ -159,3 +166,4 @@ require 'header.php';
     </div>
 
     <?php require 'footer.php' ?>
+    <?php $conn = null; ?>

@@ -2,6 +2,12 @@
 // Session Start
 session_start();
 
+// Check if User is already Exists
+if(isset($_SESSION['loggedIn']) == true){
+      // Redirected to Home page 
+    header('Location: gallery/index.php');
+    exit;
+}
 // Connection to Database
 require 'config.php';
 
@@ -136,7 +142,7 @@ require 'header.php';
                             <div class="mb-3">
                                 <label for="fullname" class="form-label">Full Name</label>
                                 <input type="text" class="form-control" id="fullname" name="fullname"
-                                    placeholder="John Doe">
+                                    placeholder="John Doe" autofocus>
                             </div>
 
                             <!-- Email -->
@@ -181,3 +187,4 @@ require 'header.php';
     </div>
 
     <?php require 'footer.php' ?>
+    <?php $conn = null; ?>
