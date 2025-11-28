@@ -108,7 +108,18 @@
                         <div class="menu-title">Manage Users</div>
                     </a>
                     <ul>
-                        <li> <a href="../users/all_user.php"><i class="bi bi-circle"></i>All Users</a>
+                        <li> <a href="all_user.php"><i class="bi bi-circle"></i>All Users</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a class="has-arrow" href="javascript:;">
+                        <div class="parent-icon"><i class="bi bi-calendar-minus-fill"></i>
+                        </div>
+                        <div class="menu-title">Manage Category</div>
+                    </a>
+                    <ul>
+                        <li> <a href="all_category.php"><i class="bi bi-circle"></i>All Category</a>
                         </li>
                     </ul>
                 </li>

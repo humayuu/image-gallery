@@ -1,5 +1,5 @@
 <?php
-require 'header.php';
+require './header.php';
 ?>
 <!--start content-->
 <main class="page-content">
@@ -82,4 +82,4 @@ require 'header.php';
 
 </main>
 <!--end page main-->
-<?php require 'footer.php' ?>
+<?php require './footer.php' ?>
