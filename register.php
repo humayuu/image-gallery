@@ -3,8 +3,8 @@
 session_start();
 
 // Check if User is already Exists
-if(isset($_SESSION['loggedIn']) == true){
-      // Redirected to Home page 
+if (isset($_SESSION['loggedIn']) == true) {
+    // Redirected to Home page 
     header('Location: gallery/index.php');
     exit;
 }
@@ -12,21 +12,21 @@ if(isset($_SESSION['loggedIn']) == true){
 require 'config.php';
 
 // Generate CSRF Token
-if(!isset($_SESSION['__csrf'])){
+if (!isset($_SESSION['__csrf'])) {
     $_SESSION['__csrf'] = bin2hex(random_bytes(32));
-}   
+}
 
 
 // Store Errors in Session Variable
-if(!isset($_SESSION['errors']) && isset($_SESSION['success'])){
+if (!isset($_SESSION['errors']) && isset($_SESSION['success'])) {
     $_SESSION['errors'] = [];
     $_SESSION['success'] = [];
 }
 
 
-if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['isSubmit'])){
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['isSubmit'])) {
     // Verify CSRF Token
-    if(!hash_equals($_SESSION['__csrf'], $_POST['__csrf'])){
+    if (!hash_equals($_SESSION['__csrf'], $_POST['__csrf'])) {
         $_SESSION['errors'][] = 'Invalid CSRF Token';
         header('Location: ' . basename(__FILE__));
         exit;
@@ -39,30 +39,30 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['isSubmit'])){
     $confirmPassword = htmlspecialchars(trim($_POST['confirmPassword']));
     $userStatus = 'Active';
     $userAdminStatus = '1';
-    
+
     // Validations
-    if(empty($userFullname) || empty($userEmail) || empty($password)){
+    if (empty($userFullname) || empty($userEmail) || empty($password)) {
         $_SESSION['errors'][] = 'All Fields are required';
         header('Location: ' . basename(__FILE__));
         exit;
-    }elseif(strlen($password) < 8){
+    } elseif (strlen($password) < 8) {
         $_SESSION['errors'][] = 'Password Must be in 8 Character';
         header('Location: ' . basename(__FILE__));
         exit;
-    }elseif($password !== $confirmPassword){
+    } elseif ($password !== $confirmPassword) {
         $_SESSION['errors'][] = 'Password and Confirm Password must be Match';
         header('Location: ' . basename(__FILE__));
         exit;
     }
 
-      // Fetch data from Database for Specific User
+    // Fetch data from Database for Specific User
     $stmt = $conn->prepare("SELECT * FROM users_tbl WHERE user_email = :uemail");
     $stmt->bindParam(':uemail', $email);
     $stmt->execute();
     $user =  $stmt->fetchAll();
 
     // Verify user email
-    if(!$user){
+    if ($user) {
         $_SESSION['errors'][] = 'User already Exists';
         header('Location: ' . basename(__FILE__));
         exit;
@@ -72,7 +72,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['isSubmit'])){
     $hashPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert Register User Data into the Database
-    try{
+    try {
 
         $conn->beginTransaction();
 
@@ -84,27 +84,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['isSubmit'])){
         $stmt->bindParam(':uadminstatus', $userAdminStatus);
         $result =  $stmt->execute();
 
-    // Redirected to Login Page
-    if($result){
-        $conn->commit();
-        $_SESSION['success'][] = '<strong>Successfully Register</strong> Please login Your Account';
-        header('Location: index.php');
-        exit;
-    }
-
-    }catch(Exception $e){
+        // Redirected to Login Page
+        if ($result) {
+            $conn->commit();
+            $_SESSION['success'][] = '<strong>Successfully Register</strong> Please login Your Account';
+            header('Location: index.php');
+            exit;
+        }
+    } catch (Exception $e) {
         $conn->rollBack();
         $_SESSION['errors'][] = 'Error in insert Data ' . $e->getMessage();
         header('Location: ' . basename(__FILE__));
         exit;
     }
-
-
 }
 
 
 // Store Errors in variable
-$errors = $_SESSION['errors'] ?? [] ; 
+$errors = $_SESSION['errors'] ?? [];
 $_SESSION['errors'] = [];
 
 require 'header.php';
@@ -122,12 +119,12 @@ require 'header.php';
                 </div>
 
                 <!-- Show Errors -->
-                <?php if(!empty($errors)): ?>
-                <?php foreach($errors as $error): ?>
-                <div class="alert alert-danger text-center" role="alert">
-                    <?= htmlspecialchars($error) ?>
-                </div>
-                <?php endforeach; ?>
+                <?php if (!empty($errors)): ?>
+                    <?php foreach ($errors as $error): ?>
+                        <div class="alert alert-danger text-center" role="alert">
+                            <?= htmlspecialchars($error) ?>
+                        </div>
+                    <?php endforeach; ?>
                 <?php endif; ?>
 
                 <!-- Registration Card -->

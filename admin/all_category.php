@@ -111,23 +111,24 @@ require 'header.php';
                             </form>
                             <!-- Display Errors -->
                             <?php if (!empty($message)): ?>
-                            <div class="row mt-3 justify-content-center">
-                                <div class="col-md-12 col-lg-12">
-                                    <?php foreach ($message as $msg): ?>
-                                    <div class="alert alert-info alert-dismissible fade show" role="alert">
-                                        <span><?= htmlspecialchars($msg) ?></span>
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                            aria-label="Close"></button>
+                                <div class="row mt-3 justify-content-center">
+                                    <div class="col-md-12 col-lg-12">
+                                        <?php foreach ($message as $msg): ?>
+                                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                                <span><?= htmlspecialchars($msg) ?></span>
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                        <?php endforeach; ?>
                                     </div>
-                                    <?php endforeach; ?>
                                 </div>
-                            </div>
                             <?php endif; ?>
                         </div>
                     </div>
                 </div>
 
                 <?php
+                $sl = 1;
                 // Pagination logic
                 $limit = 5;
                 $pageNo = isset($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -150,39 +151,39 @@ require 'header.php';
                         <div class="card-body">
                             <div class="table-responsive">
                                 <?php if ($categories): ?>
-                                <table class="table align-middle">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Category Name</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($categories as $category): ?>
-                                        <tr>
-                                            <td><?= htmlspecialchars($category['id']) ?></td>
-                                            <td><?= htmlspecialchars($category['category_name']) ?></td>
-                                            <td>
-                                                <div class="d-flex align-items-center gap-3 fs-6">
-                                                    <a href="edit_category.php?id=<?= htmlspecialchars($category['id']) ?>"
-                                                        class="text-warning" data-bs-toggle="tooltip"
-                                                        data-bs-placement="bottom" title="Edit info"><i
-                                                            class="bi bi-pencil-fill"></i></a>
-                                                    <a href="delete_category.php?id=<?= htmlspecialchars($category['id']) ?>"
-                                                        class="text-danger" onclick="return confirm('Are you sure?')"
-                                                        data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                        title="Delete"><i class="bi bi-trash-fill"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
+                                    <table class="table align-middle">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Category Name</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($categories as $category): ?>
+                                                <tr>
+                                                    <td><?= $sl++ ?></td>
+                                                    <td><?= htmlspecialchars($category['category_name']) ?></td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center gap-3 fs-6">
+                                                            <a href="edit_category.php?id=<?= htmlspecialchars($category['id']) ?>"
+                                                                class="text-warning" data-bs-toggle="tooltip"
+                                                                data-bs-placement="bottom" title="Edit info"><i
+                                                                    class="bi bi-pencil-fill"></i></a>
+                                                            <a href="delete_category.php?id=<?= htmlspecialchars($category['id']) ?>"
+                                                                class="text-danger" onclick="return confirm('Are you sure?')"
+                                                                data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                title="Delete"><i class="bi bi-trash-fill"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
                                 <?php else: ?>
-                                <div class="alert alert-danger fade show" role="alert">
-                                    <span>No categories found!</span>
-                                </div>
+                                    <div class="alert alert-danger fade show" role="alert">
+                                        <span>No categories found!</span>
+                                    </div>
                                 <?php endif; ?>
                             </div>
 
@@ -194,10 +195,10 @@ require 'header.php';
                                     </li>
 
                                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                                    <li class="page-item <?= ($pageNo == $i) ? 'active' : '' ?>">
-                                        <a class="page-link"
-                                            href="?page=<?= htmlspecialchars($i) ?>"><?= htmlspecialchars($i) ?></a>
-                                    </li>
+                                        <li class="page-item <?= ($pageNo == $i) ? 'active' : '' ?>">
+                                            <a class="page-link"
+                                                href="?page=<?= htmlspecialchars($i) ?>"><?= htmlspecialchars($i) ?></a>
+                                        </li>
                                     <?php endfor; ?>
 
                                     <li class="page-item <?= ($pageNo == $totalPages) ? 'disabled' : '' ?>">

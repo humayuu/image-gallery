@@ -1,5 +1,79 @@
 <?php
-require 'header.php'
+// Session Start
+session_start();
+
+// Connection to database
+require '../config.php';
+// Generate CSRF Token
+if (empty($_SESSION['__csrf'])) {
+    $_SESSION['__csrf'] = bin2hex(random_bytes(32));
+}
+
+// Initialize Session for Store Error and Success Message
+if (!isset($_SESSION['message'])) {
+    $_SESSION['message'] = [];
+}
+
+
+
+// fetch data with specific id
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $sql = $conn->prepare('SELECT * FROM category_tbl WHERE id = :id');
+    $sql->bindParam(':id', $id);
+    $sql->execute();
+    $category = $sql->fetch();
+}
+
+// Handle POST request to add category
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['issSubmitted'])) {
+    // Verify CSRF Token
+    if (!hash_equals($_SESSION['__csrf'], $_POST['__csrf'])) {
+        $_SESSION['message'][] = 'Invalid CSRF Token';
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit;
+    }
+
+    $id = htmlspecialchars($_POST['id']);
+    $categoryName = filter_var(trim($_POST['name']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $oldCategory = htmlspecialchars($_POST['oldCategory']);
+    $newCategoryName;
+
+    $newCategoryName = ($categoryName && $categoryName !== $oldCategory) ? $categoryName : $oldCategory;
+
+    // Insert Data into the Database
+    try {
+        $conn->beginTransaction();
+
+        $stmt = $conn->prepare('UPDATE category_tbl SET category_name = :cname WHERE id = :id');
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':cname', $newCategoryName);
+        $result = $stmt->execute();
+
+        if ($result) {
+            $conn->commit();
+            $_SESSION['message'][] = 'Category successfully Update';
+            header('Location: all_category.php');
+            exit;
+        }
+    } catch (Exception $e) {
+        $conn->rollBack();
+        $_SESSION['message'][] = 'Insert error: ' . $e->getMessage();
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit;
+    }
+}
+
+
+
+
+
+
+// Get messages and clear after displaying
+$message = $_SESSION['message'] ?? [];
+$_SESSION['message'] = [];
+
+require 'header.php';
 
 ?>
 <!--start content-->
@@ -28,31 +102,36 @@ require 'header.php'
                 <div class="col-12 col-lg-4 d-flex">
                     <div class="card border shadow-none w-100">
                         <div class="card-body">
-                            <form" class="row g-3">
+                            <form method="post" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" class="row g-3">
+                                <input type="hidden" name="__csrf" value="<?= htmlspecialchars($_SESSION['__csrf']) ?>">
+                                <input type="hidden" name="id" value="<?= htmlspecialchars($category['id']) ?>">
+                                <input type="hidden" name="oldCategory"
+                                    value="<?= htmlspecialchars($category['category_name']) ?>">
                                 <div class="col-12">
                                     <label class="form-label">Name</label>
-                                    <input type="text" class="form-control" name="name" placeholder="Category name">
+                                    <input type="text" class="form-control" name="name" placeholder="Category name"
+                                        value="<?= htmlspecialchars($category['category_name'])  ?>">
                                 </div>
                                 <div class="col-12">
                                     <div class="d-grid">
                                         <button name="issSubmitted" class="btn btn-primary">Update Category</button>
                                     </div>
                                 </div>
-                                </form>
-                                <!-- Display Errors -->
-                                <?php if (!empty($errors)): ?>
+                            </form>
+                            <!-- Display Errors -->
+                            <?php if (!empty($message)): ?>
                                 <div class="row mt-3 justify-content-center">
                                     <div class="col-md-12 col-lg-12">
-                                        <?php foreach ($errors as $error): ?>
-                                        <div class="alert alert-info alert-dismissible fade show" role="alert">
-                                            <span><?= htmlspecialchars($error) ?></span>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                                aria-label="Close"></button>
-                                        </div>
+                                        <?php foreach ($message as $msg): ?>
+                                            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                                <span><?= htmlspecialchars($msg) ?></span>
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                            </div>
                                         <?php endforeach; ?>
                                     </div>
                                 </div>
-                                <?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
