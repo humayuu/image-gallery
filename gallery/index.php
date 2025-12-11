@@ -168,10 +168,9 @@ $_SESSION['errors'] = [];
                     <li class="nav-item dropdown">
                         <a class="nav-link fs-5 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
-                            User
+                            <?= htmlspecialchars($_SESSION['userName']) ?>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="profile.php">Profile</a></li>
                             <li><a class="dropdown-item" href="change_password.php">Change Password</a></li>
                             <li><a class="dropdown-item" href="../logout.php">Logout</a></li>
                         </ul>
@@ -266,10 +265,6 @@ $_SESSION['errors'] = [];
                                         <a href="edit.php?id=<?= htmlspecialchars($img['id']) ?>"
                                             class="text-primary fs-5 icon-hover" title="Edit">
                                             <i class="bi bi-pencil-fill"></i>
-                                        </a>
-                                        <a href="detail.php?id=<?= htmlspecialchars($img['id']) ?>"
-                                            class="text-dark fs-5 icon-hover" title="detail">
-                                            <i class="bi bi-eye-fill"></i>
                                         </a>
                                     </div>
                                 </div>
