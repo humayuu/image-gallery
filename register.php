@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['isSubmit'])) {
     $password = htmlspecialchars(trim($_POST['password']));
     $confirmPassword = htmlspecialchars(trim($_POST['confirmPassword']));
     $userStatus = 'Active';
-    $userAdminStatus = '1';
+    $userAdminStatus = '0';
 
     // Validations
     if (empty($userFullname) || empty($userEmail) || empty($password)) {

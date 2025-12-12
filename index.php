@@ -1,10 +1,10 @@
-<?php 
+<?php
 // Session Start
 session_start();
 
 // Check if User is already Exists
-if(isset($_SESSION['loggedIn']) == true){
-      // Redirected to Home page 
+if (isset($_SESSION['loggedIn']) == true) {
+    // Redirected to Home page 
     header('Location: gallery/index.php');
     exit;
 }
@@ -13,19 +13,19 @@ if(isset($_SESSION['loggedIn']) == true){
 require 'config.php';
 
 // Generate CSRF Token
-if(!isset($_SESSION['__csrf'])){
+if (!isset($_SESSION['__csrf'])) {
     $_SESSION['__csrf'] = bin2hex(random_bytes(32));
-}   
+}
 
 // Store Errors in Session Variable
-if(!isset($_SESSION['errors']) && isset($_SESSION['success'])){
+if (!isset($_SESSION['errors']) && isset($_SESSION['success'])) {
     $_SESSION['errors'] = [];
     $_SESSION['success'] = [];
 }
 
-if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['isSubmitted'])){
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['isSubmitted'])) {
     // Verify CSRF Token
-    if(!hash_equals($_SESSION['__csrf'], $_POST['__csrf'])){
+    if (!hash_equals($_SESSION['__csrf'], $_POST['__csrf'])) {
         $_SESSION['errors'][] = 'Invalid CSRF Token';
         header('Location: ' . basename(__FILE__));
         exit;
@@ -34,33 +34,37 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['isSubmitted'])){
     // Collect Data from Form
     $email = filter_var(trim($_POST['email']), FILTER_VALIDATE_EMAIL);
     $password = htmlspecialchars(trim($_POST['password']));
+    $status = 'Active';
 
     // Validation
-    if(empty($email) || empty($password)){
+    if (empty($email) || empty($password)) {
         $_SESSION['errors'][] = 'All Fields are required';
         header('Location: ' . basename(__FILE__));
         exit;
     }
 
     // Fetch data from Database for Specific User
-    $stmt = $conn->prepare("SELECT * FROM users_tbl WHERE user_email = :uemail");
+    $stmt = $conn->prepare("SELECT * FROM users_tbl WHERE user_email = :uemail AND user_status = :ustatus");
     $stmt->bindParam(':uemail', $email);
+    $stmt->bindParam(':ustatus', $status);
     $stmt->execute();
     $user =  $stmt->fetch();
 
     // Verify user email
-    if(!$user){
+    if (!$user) {
         $_SESSION['errors'][] = 'Invalid Email or Password';
         header('Location: ' . basename(__FILE__));
         exit;
     }
 
     // Verify user password
-    if(!password_verify($password, $user['user_password'])){
+    if (!password_verify($password, $user['user_password'])) {
         $_SESSION['errors'][] = 'Invalid Email or Password';
         header('Location: ' . basename(__FILE__));
         exit;
     }
+
+
 
     // Store user data into the session variable
     $_SESSION['loggedIn']   = true;
@@ -68,17 +72,23 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['isSubmitted'])){
     $_SESSION['userName']   = $user['user_fullname'];
     $_SESSION['userEmail']  = $user['user_email'];
 
+
+
+    // Update Admin user Status
+    $query = $conn->prepare('UPDATE users_tbl SET user_admin_status = "1" WHERE id = :uid');
+    $query->bindParam(':uid', $_SESSION['userId']);
+    $query->execute();
+
     // Redirected to Home page 
     header('Location: gallery/index.php');
     exit;
-
 }
 
 // Store Success and Errors in variable
-$message = $_SESSION['success'] ?? [] ; 
+$message = $_SESSION['success'] ?? [];
 $_SESSION['success'] = [];
 
-$errors = $_SESSION['errors'] ?? [] ; 
+$errors = $_SESSION['errors'] ?? [];
 $_SESSION['errors'] = [];
 
 
@@ -96,21 +106,21 @@ require 'header.php';
                 </div>
 
                 <!-- Show Success Message -->
-                <?php if(!empty($message)): ?>
-                <?php foreach($message as $msg): ?>
-                <div class="alert alert-success text-center" role="alert">
-                    <?= $msg ?>
-                </div>
-                <?php endforeach; ?>
+                <?php if (!empty($message)): ?>
+                    <?php foreach ($message as $msg): ?>
+                        <div class="alert alert-success text-center" role="alert">
+                            <?= $msg ?>
+                        </div>
+                    <?php endforeach; ?>
                 <?php endif; ?>
 
                 <!-- Show Errors Message -->
-                <?php if(!empty($errors)): ?>
-                <?php foreach($errors as $error): ?>
-                <div class="alert alert-danger text-center" role="alert">
-                    <?= $error ?>
-                </div>
-                <?php endforeach; ?>
+                <?php if (!empty($errors)): ?>
+                    <?php foreach ($errors as $error): ?>
+                        <div class="alert alert-danger text-center" role="alert">
+                            <?= $error ?>
+                        </div>
+                    <?php endforeach; ?>
                 <?php endif; ?>
 
                 <!-- Login Card -->

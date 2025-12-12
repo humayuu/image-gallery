@@ -56,7 +56,7 @@
                 <div class="dropdown dropdown-user-setting">
                     <a class="dropdown-toggle dropdown-toggle-nocaret" href="#" data-bs-toggle="dropdown">
                         <div class="user-setting d-flex align-items-center gap-3">
-                            <img src="" class="user-img" alt="">
+                            Admin
                             <div class="d-none d-sm-block">
                                 <p class="user-name mb-0"></p>
                                 <small class="mb-0 dropdown-user-designation"></small>
@@ -64,17 +64,6 @@
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li>
-                            <a class="dropdown-item" href="../admin_users/admin_profile.php">
-                                <div class="d-flex align-items-center">
-                                    <div class=""><i class="bi bi-person-fill"></i></div>
-                                    <div class="ms-3"><span>Profile</span></div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
                         <li>
                             <a class="dropdown-item" href="logout.php">
                                 <div class="d-flex align-items-center">
